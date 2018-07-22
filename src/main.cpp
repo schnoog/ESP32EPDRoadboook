@@ -21,28 +21,48 @@
 #include "Esp.h"
 
 #include "include_SD.h"
-
-
+#include "include_EPD.h"
+//#include "include_JSON.h"
 
 void setup() {
   Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
-    sd_init();
-
+   sd_init();
+    init_EPD();
 }
 
 void loop() {
-    //    Serial.println(ESP.getFreeHeap());
-  // nothing happens after setup
         if (Serial.available() > 0) {
-                // read the incoming byte:
-
-                // say what you got:
-//                Serial.print("I received: ");
-//                Serial.println(incomingByte, DEC);
+            
         }
 
+
+
+  myFile = SD.open("json1.json");
+  if (myFile) {
+    Serial.println("json1.json:");
+
+    // read from the file until there's nothing else in it:
+    while (myFile.available()) {
+      Serial.write(myFile.read());
+    }
+    // close the file:
+    myFile.close();
+  } else {
+    // if the file didn't open, print an error:
+    Serial.println("error opening json1.json");
+  }
+
+
+
+
+
+
+
+
+
+        showIt();
 }
 

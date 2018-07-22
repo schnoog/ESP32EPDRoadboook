@@ -20,10 +20,12 @@ uint32_t eraseSize;
 //--------------------------------------------------------------
 void ls(char *path) {
   SdBaseFile dir;
+  
   if (!dir.open(path, O_READ) || !dir.isDir()) {
     Serial.println("bad dir");
     return;
   }
+  dir.printName();
   dir.ls(&Serial, LS_R);
 }
 //-------------------------------------------------------------
