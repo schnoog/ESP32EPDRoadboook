@@ -58,7 +58,8 @@ GxEPD_Class display(io, /*RST=*/ 33, /*BUSY=*/ 21); // arbitrary selection of (1
 
 void init_EPD(){
     Serial.println("setup");
-    display.init(115200); // enable diagnostic output on Serial
+    //display.init(115200); // enable diagnostic output on Serial
+    display.init();
     u8g2_for_adafruit_gfx.begin(display);
     Serial.println("setup done");
 }

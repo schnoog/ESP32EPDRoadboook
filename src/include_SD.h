@@ -1,4 +1,5 @@
 #include "SdFat.h"
+
 const uint8_t SOFT_MISO_PIN = 19;
 const uint8_t SOFT_MOSI_PIN = 23;
 const uint8_t SOFT_SCK_PIN  = 18;
@@ -13,7 +14,10 @@ uint32_t cardSize;
 uint32_t eraseSize;
 
 
-
+// sd_getfilecontent(char *filename)
+// listfiles()
+//
+//
 
 
 
@@ -44,3 +48,40 @@ void sd_init(){
   Serial.println("initialization done.");
   listfiles();
 }
+
+String sd_getfilecontent(char *filename){
+  myFile = SD.open(filename);
+  //double s = myFile.fileSize();
+  myFile.printFileSize(&Serial);
+  //char *retval;
+  String SVal;
+  if (myFile) {
+    Serial.println(filename);
+
+    // read from the file until there's nothing else in it:
+    Serial.println("Filecontent via serialwrite myfile.read");
+    while (myFile.available()) {
+      //myFile.read(retval);
+      char ltr = myFile.read();
+      SVal = SVal + ltr;
+      //Serial.write(myFile.read());
+    }
+      Serial.println(SVal);
+      Serial.println("--------------------------");
+    // close the file:
+    myFile.close();
+    return SVal;
+  } else {
+    // if the file didn't open, print an error:
+    //retval = "Error opening file";
+    Serial.println("error opening ");
+    Serial.println(filename);
+    return SVal;
+  }
+
+
+}
+
+
+
+
