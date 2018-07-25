@@ -59,7 +59,7 @@ String sd_getfilecontent(char *filename){
     Serial.println(filename);
 
     // read from the file until there's nothing else in it:
-    Serial.println("Filecontent via serialwrite myfile.read");
+    //Serial.println("Filecontent via serialwrite myfile.read");
     while (myFile.available()) {
       //myFile.read(retval);
       char ltr = myFile.read();
@@ -67,7 +67,7 @@ String sd_getfilecontent(char *filename){
       //Serial.write(myFile.read());
     }
       Serial.println(SVal);
-      Serial.println("--------------------------");
+      //Serial.println("--------------------------");
     // close the file:
     myFile.close();
     return SVal;

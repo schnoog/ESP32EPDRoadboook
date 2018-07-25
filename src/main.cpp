@@ -22,7 +22,8 @@
 #include "include_SD.h"
 #include "include_EPD.h"
 #include "include_UNICODE.h"
-#include "include_JSON.h"
+//#include "include_JSON.h"
+#include "include_ReadAndShow.h"
 
 char getout[] = "json1.json";
 String tmpS1;
@@ -34,13 +35,13 @@ void setup() {
   }
    sd_init();
     init_EPD();
-    String SCC = sd_getfilecontent(getout);
-    Serial.println("SCC--------------");
-    Serial.println(SCC);
-    Serial.println("SCC--------------");
+   // String SCC = sd_getfilecontent(getout);
+   // Serial.println("SCC--------------");
+   // Serial.println(SCC);
+   //  Serial.println("SCC--------------");
 
-testjson(SCC);
-
+//testjson(SCC);//
+ShowEntries(getout,2,3);
 
 }
 
