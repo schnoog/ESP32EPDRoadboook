@@ -8,8 +8,8 @@ String IconDown = "\u004F";
 String IconLeft = "\u0050";
 String IconRight = "\u0051";
 String IconUp   = "\u0052";
-String IconOK  = "\u0077";
-String IconNOK  = "\u0078";
+String IconOK  = "\u0078";
+String IconNOK  = "\u0079";
 String IconDetails = "\u00CF";
 
 
@@ -23,7 +23,7 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
     const uint8_t *f = u8g2_font_fub35_tf;
     const uint8_t *sf = u8g2_font_u8glib_4_tf;
     const uint8_t *iconFont = u8g2_font_open_iconic_all_4x_t;
-
+    const int16_t IconSize = 34;
 
     String strWork;
     const int16_t yOS = 37; //Single Line OffSet
@@ -67,6 +67,7 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
                     Serial.println("Eintrag " + (String)Mcount);
                     Serial.println(PName);
                     Serial.println(SID +  "  " + PDone + "  " + PName);
+                    String DetFile = "details/" + SID + ".bmp";
                     Serial.println("---------------------------------");
 
                     intStringLength = PName.length();
@@ -78,8 +79,28 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
                     u8g2_for_adafruit_gfx.setFont(sf);
                     u8g2_for_adafruit_gfx.setCursor(0,(SectionEnd + 2));
                     u8g2_for_adafruit_gfx.print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                    for (int16_t Scount = SectionStart; Scount < SectionEnd; Scount = Scount + 4 ){
+                          u8g2_for_adafruit_gfx.setCursor(LeftSetOff - 4,Scount);
+                          u8g2_for_adafruit_gfx.print("X");  
+                    }
+                    u8g2_for_adafruit_gfx.setFont(iconFont);
+                    int16_t ButOffSet = 0;
+                    ButOffSet = SectionStart;
+                    ButOffSet = ButOffSet + IconSize;
+                    if (SD.exists(string2char(DetFile))){
+                     
+                        u8g2_for_adafruit_gfx.setCursor(4,ButOffSet);
+                        u8g2_for_adafruit_gfx.print(IconDetails);
+                        
+                    }
+                    ButOffSet = ButOffSet + IconSize;
+                    u8g2_for_adafruit_gfx.setCursor(4,ButOffSet);
+                    u8g2_for_adafruit_gfx.print(IconOK);
                     u8g2_for_adafruit_gfx.setFont(f);
-                    
+
+
+
+
 
                     if(intStringLength >  MaxCharsPerLine){
                         while((MOS * MaxCharsPerLine) < intStringLength){
@@ -104,8 +125,9 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
                     }
 
 
-
-
+                Serial.println("-----RAM-----");
+                Serial.println(ESP.getFreeHeap());
+                Serial.println("-----RAM-----");
 
 
 

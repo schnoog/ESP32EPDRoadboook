@@ -25,6 +25,11 @@
 //#include "include_JSON.h"
 #include "include_ReadAndShow.h"
 
+int MainDataOffset = 0;
+String DataID1 = (String)"" ;
+String DataID2 = (String)"" ;
+String DataID3 = (String)"" ;
+
 
 char getout[] = "json1.json";
 String tmpS1;
