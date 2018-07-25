@@ -21,44 +21,49 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
     String SCC = sd_getfilecontent(filename);
 //    const uint8_t *f = u8g2_font_courB24_tf;
     const uint8_t *f = u8g2_font_fub35_tf;
-    const uint8_t *sf = u8g2_font_u8glib_4_tf;
+    const uint8_t *sf = u8g2_font_4x6_mf;
     const uint8_t *iconFont = u8g2_font_open_iconic_all_4x_t;
-
-
-    String strWork;
-    const int16_t yOS = 37; //Single Line OffSet
+    const int16_t yOS = 45; //Single Line OffSet
     const int16_t ItemOffSet = 90;
     const int16_t LeftSetOff = 50;
     const int MaxCharsPerLine = 13;
-    const int16_t LineSubOffSet = 10;
+    const int LineSubOffSet = 10;
+
+    String strWork;
     int intStringLength = 0;
-    int16_t EffTopOffSet = 0;
-    int Mcount = 0;
-    int retCount = 0;
-    int OSC = 0;
-    int MOS = 0;
-    int16_t SectionEnd = 0;
-    int16_t SectionStart = 0;
-    int16_t LineSpace = 5;
     display.setRotation(0);
     display.fillScreen(GxEPD_WHITE);
+    
     u8g2_for_adafruit_gfx.setFontMode(1);                   // use u8g2 transparent mode (this is default)
     u8g2_for_adafruit_gfx.setFontDirection(0);              // left to right (this is default)
     u8g2_for_adafruit_gfx.setForegroundColor(GxEPD_BLACK);  // apply Adafruit GFX color
     u8g2_for_adafruit_gfx.setBackgroundColor(GxEPD_WHITE);  // apply Adafruit GFX color
     u8g2_for_adafruit_gfx.setFont(f); // select u8g2 font from here: https://github.com/olikraus/u8g2/wiki/fntlistall
+    //display.drawBitmap()
+    //display.println("Umlaut ÄÖÜäéöü");
+  
+    int16_t EffTopOffSet = 0;
+    int Mcount = 0;
+    int retCount = 0;
+    int OSC = 0;
+    int MOS = 0;
 
-
+//    StaticJsonBuffer<1024> jsonBuffer;
     DynamicJsonBuffer jsonBuffer;
+    //Serial.println(SCC);
     JsonArray& arr = jsonBuffer.parseArray(SCC);
 
         for (JsonArray::iterator it=arr.begin(); it!=arr.end(); ++it)
         {
+            //Serial.println("Eintrag " + (String)count);
             if (Mcount >= intStartWith){
                 if(retCount < MaxCount){
+                    //Serial.println("LoopOutput") ;
                     String SID = (*it)["id"];
                     String PName = (*it)["name"];
                     if (rbase64.decode(PName) == RBASE64_STATUS_OK ) {
+                        //Serial.println("\nConverted the String from Base64 : ");
+                        //Serial.println(rbase64.result());
                         PName  = rbase64.result();
                     }  
 
@@ -66,55 +71,41 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
                     String PDone = (*it)["done"];
                     Serial.println("Eintrag " + (String)Mcount);
                     Serial.println(PName);
-                    Serial.println(SID +  "  " + PDone + "  " + PName);
+                    Serial.println(SID +  "  " + PDone);
                     Serial.println("---------------------------------");
 
                     intStringLength = PName.length();
                     MOS=0;
-                    SectionEnd = (1 + retCount) * ItemOffSet;
-                    SectionStart = retCount * ItemOffSet;
-                    Serial.println("Section End of Section " + (String)retCount + " at " + (String)SectionEnd);
-
-                    u8g2_for_adafruit_gfx.setFont(sf);
-                    u8g2_for_adafruit_gfx.setCursor(0,(SectionEnd + 2));
-                    u8g2_for_adafruit_gfx.print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                    u8g2_for_adafruit_gfx.setFont(f);
-                    
 
                     if(intStringLength >  MaxCharsPerLine){
                         while((MOS * MaxCharsPerLine) < intStringLength){
                             strWork = PName.substring(MOS * MaxCharsPerLine,MOS * MaxCharsPerLine + MaxCharsPerLine);    
-                            EffTopOffSet = SectionStart + (yOS * (1 + (int16_t)MOS));
-                            EffTopOffSet = EffTopOffSet  + LineSpace;
-                         //   EffTopOffSet = EffTopOffSet + (MOS * LineSubOffSet);
-                        //    EffTopOffSet = EffTopOffSet + (LineSubOffSet * (retCount + 1));
-                        Serial.println("Printing multi Line " + strWork + " at " + (String)EffTopOffSet);
+                            OSC++;
+                            EffTopOffSet = (int16_t)OSC * yOS;
                             u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet);
                             u8g2_for_adafruit_gfx.print(strWork);
                             MOS++;
                         }
 
                     }else{
-//                        EffTopOffSet = SectionEnd - (ItemOffSet / (int16_t)2);
-//                        EffTopOffSet = EffTopOffSet + (yOS / 2);
-                        EffTopOffSet = SectionStart + (yOS / 2) + yOS + LineSubOffSet;
-                        Serial.println("Printing single Line " + PName + " at " + (String)EffTopOffSet);
+                        OSC++;
+                        EffTopOffSet = (int16_t)OSC * yOS;
+                        //display.println()
+                        //display.drawExampleBitmap(BT_ICON_DETAILS,sizeof(BT_ICON_DETAILS));
+                        //display.setCursor(0,EffTopOffSet);
+                        u8g2_for_adafruit_gfx.setFont(iconFont);
+                        u8g2_for_adafruit_gfx.setCursor(0,EffTopOffSet);
+                        u8g2_for_adafruit_gfx.print(IconDetails);
+                        //display.drawBitmap(BT_ICON_DETAILS,sizeof(BT_ICON_DETAILS),GxEPD::bm_default | GxEPD::bm_partial_update);
+                        u8g2_for_adafruit_gfx.setFont(f);
                         u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet);
-                        u8g2_for_adafruit_gfx.print(PName);                        
+                        u8g2_for_adafruit_gfx.print(PName);
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    u8g2_for_adafruit_gfx.setFont(sf);
+                    u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet + LineSubOffSet);
+                    u8g2_for_adafruit_gfx.print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                    u8g2_for_adafruit_gfx.setFont(f);
+                    //display.setFont(f);
 
                     retCount++;
 
@@ -123,10 +114,6 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
             }
             Mcount++;
         }
-
-
-
-
     display.update();
         
 Serial.println("Count:" + (String)Mcount);

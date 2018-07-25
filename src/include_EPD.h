@@ -16,7 +16,7 @@
 #define PIN_SPI_SCK   (14)
 // static const uint8_t SCK   = 14;
 #include <GxEPD.h>
-
+#include <U8g2_for_Adafruit_GFX.h>
 // select the display class to use, only one
 //#include <GxGDEP015OC1/GxGDEP015OC1.cpp>    // 1.54" b/w
 //#include <GxGDEW0154Z04/GxGDEW0154Z04.cpp>  // 1.54" b/w/r
@@ -33,13 +33,12 @@
 //#include <GxGDEW075Z09/GxGDEW075Z09.cpp>    // 7.5" b/w/r
 
 // FreeFonts from Adafruit_GFX
-#include <U8g2_for_Adafruit_GFX.h>
+
 #include <Fonts/FreeMonoBold9pt7b.h>
 #include <Fonts/FreeMonoBold12pt7b.h>
 //#include <Fonts/u8g2_font_helvR14_tf.h>
 //#include <Fonts/u8g2_font_profont22_mr.h>
 //#include <Fonts/Open_Sans_Bold_12pt.h>
-U8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;
 
 
 #include <GxIO/GxIO_SPI/GxIO_SPI.cpp>
@@ -54,6 +53,7 @@ U8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;
 //busy = Pin(21)
 GxIO_Class io(SPI, /*CS=5*/ 15, /*DC=*/ 27, /*RST=*/ 33); // arbitrary selection of 17, 16
 GxEPD_Class display(io, /*RST=*/ 33, /*BUSY=*/ 21); // arbitrary selection of (16), 4
+U8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;
 
 
 void init_EPD(){
