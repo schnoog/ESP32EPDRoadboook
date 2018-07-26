@@ -17,11 +17,17 @@
 
  */
 
+
+
+//#include <Arduino.h>
 #include <SPI.h>
 #include "Esp.h"
 #include "include_SD.h"
 #include "include_EPD.h"
 #include "include_UNICODE.h"
+#include "include_structs.h"
+PositionType PosData; //Actual display position
+buttonDataTyp ButtonData[17];
 //#include "include_JSON.h"
 #include "include_ReadAndShow.h"
 
