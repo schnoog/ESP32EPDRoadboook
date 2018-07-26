@@ -87,6 +87,7 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
         for (JsonArray::iterator it=arr.begin(); it!=arr.end(); ++it)
         {
             if (Mcount >= intStartWith){
+                //Serial.println("Reporting MCount >= intStartWith");
                 if(retCount < MaxCount){
                     String SID = (*it)["id"];
                     String PName = (*it)["name"];
@@ -96,68 +97,72 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
 
 
                     String PDone = (*it)["done"];
-                    Serial.println("Eintrag " + (String)Mcount);
-                    Serial.println(PName);
-                    Serial.println(SID +  "  " + PDone + "  " + PName);
+                  //  Serial.println("Eintrag " + (String)Mcount);
+                  //  Serial.println(PName);
+                  //  Serial.println(SID +  "  " + PDone + "  " + PName);
                     String DetFile = "details/" + SID + ".bmp";
-                    Serial.println("---------------------------------");
-                if(PDone.equals((String)"0")){
-                                    SubCount++;
-                                    intStringLength = PName.length();
-                                    MOS=0;
-                                    SectionEnd = (1 + retCount) * ItemOffSet;
-                                    SectionStart = retCount * ItemOffSet;
-                                    u8g2_for_adafruit_gfx.setFont(sf);
-                                    u8g2_for_adafruit_gfx.setCursor(0,(SectionEnd + 2));
-                                    u8g2_for_adafruit_gfx.print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                                    for (int16_t Scount = SectionStart; Scount < SectionEnd; Scount = Scount + 4 ){
-                                        u8g2_for_adafruit_gfx.setCursor(LeftSetOff - 4,Scount);
-                                        u8g2_for_adafruit_gfx.print("X");  
-                                    }
-                                    u8g2_for_adafruit_gfx.setFont(iconFont);
-                                    int16_t ButOffSet = 0;
-                                    ButOffSet = SectionStart + 10 ;
-                                    ButOffSet = ButOffSet + IconSize;
-
-                                    ButtonData[SubCount].BFunction = string2char("OpenDetails");
-                                    ButtonData[SubCount].BValue = string2char("0");
-
-                                    if (SD.exists(string2char(DetFile))){
-
-                                        ButtonData[SubCount].BValue = string2char(SID);
-
-                                        u8g2_for_adafruit_gfx.setCursor(4,ButOffSet);
-                                        u8g2_for_adafruit_gfx.print(IconDetails);
-                                    }
-                                    SubCount++;
-                                     
-                                    ButtonData[SubCount].BFunction = string2char("MarkDone");
-                                    ButtonData[SubCount].BValue = string2char(SID);                                    
-
-                                    ButOffSet = ButOffSet + IconSize;
-                                    u8g2_for_adafruit_gfx.setCursor(4,ButOffSet);
-                                    u8g2_for_adafruit_gfx.print(IconOK);
-                                    u8g2_for_adafruit_gfx.setFont(f);
-                                    if(intStringLength >  MaxCharsPerLine){
-                                        while((MOS * MaxCharsPerLine) < intStringLength){
-                                            strWork = PName.substring(MOS * MaxCharsPerLine,MOS * MaxCharsPerLine + MaxCharsPerLine);    
-                                            EffTopOffSet = SectionStart + (yOS * (1 + (int16_t)MOS));
-                                            EffTopOffSet = EffTopOffSet  + LineSpace;
-                                            u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet);
-                                            u8g2_for_adafruit_gfx.print(strWork);
-                                            MOS++;
+                  //  Serial.println("---------------------------------");
+                    if(PDone.equals((String)"0")){
+                                        SubCount++;
+                                        intStringLength = PName.length();
+                                        MOS=0;
+                                        SectionEnd = (1 + retCount) * ItemOffSet;
+                                        SectionStart = retCount * ItemOffSet;
+                                        u8g2_for_adafruit_gfx.setFont(sf);
+                                        u8g2_for_adafruit_gfx.setCursor(0,(SectionEnd + 2));
+                                        u8g2_for_adafruit_gfx.print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                                        for (int16_t Scount = SectionStart; Scount < SectionEnd; Scount = Scount + 4 ){
+                                            u8g2_for_adafruit_gfx.setCursor(LeftSetOff - 4,Scount);
+                                            u8g2_for_adafruit_gfx.print("X");  
                                         }
-                                    }else{
-                                        EffTopOffSet = SectionStart + (yOS / 2) + yOS + LineSubOffSet;
-                                        u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet);
-                                        u8g2_for_adafruit_gfx.print(PName);                        
-                                    }
-                                    retCount++;
-                }
+                                        u8g2_for_adafruit_gfx.setFont(iconFont);
+                                        int16_t ButOffSet = 0;
+                                        ButOffSet = SectionStart + 10 ;
+                                        ButOffSet = ButOffSet + IconSize;
+
+                                        ButtonData[SubCount].BFunction = string2char("OpenDetails");
+                                        ButtonData[SubCount].BValue = string2char("0");
+
+                                        if (SD.exists(string2char(DetFile))){
+
+                                            ButtonData[SubCount].BValue = string2char(SID);
+
+                                            u8g2_for_adafruit_gfx.setCursor(4,ButOffSet);
+                                            u8g2_for_adafruit_gfx.print(IconDetails);
+                                        }
+                                        SubCount++;
+                                        
+                                        ButtonData[SubCount].BFunction = string2char("MarkDone");
+                                        ButtonData[SubCount].BValue = string2char(SID);                                    
+
+                                        ButOffSet = ButOffSet + IconSize;
+                                        u8g2_for_adafruit_gfx.setCursor(4,ButOffSet);
+                                        u8g2_for_adafruit_gfx.print(IconOK);
+                                        u8g2_for_adafruit_gfx.setFont(f);
+                                        if(intStringLength >  MaxCharsPerLine){
+                                            while((MOS * MaxCharsPerLine) < intStringLength){
+                                                strWork = PName.substring(MOS * MaxCharsPerLine,MOS * MaxCharsPerLine + MaxCharsPerLine);    
+                                                EffTopOffSet = SectionStart + (yOS * (1 + (int16_t)MOS));
+                                                EffTopOffSet = EffTopOffSet  + LineSpace;
+                                                u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet);
+                                                u8g2_for_adafruit_gfx.print(strWork);
+                                                MOS++;
+                                            }
+                                        }else{
+                                            EffTopOffSet = SectionStart + (yOS / 2) + yOS + LineSubOffSet;
+                                            u8g2_for_adafruit_gfx.setCursor(LeftSetOff, EffTopOffSet);
+                                            u8g2_for_adafruit_gfx.print(PName);                        
+                                        }
+                                        retCount++;
+                    }
 
                 }
+            }else{
+                 //               Serial.println("Skipping  MCount < intStartWith");
             }
             Mcount++;
+        }
+/* BUTTONS */
 //Button Buttons - 
 //Back/Exit - UP - DOWN - SYSTEM - Power (DeepSleep)
         u8g2_for_adafruit_gfx.setFont(ButtonIconFront);
@@ -205,13 +210,11 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
         ButtonData[SubCount].BValue = (String)intStartWith;        
 */
         u8g2_for_adafruit_gfx.setFont(f);
-        }
-
-
+/* BUTTONS */
 
 
     display.update();
         
-Serial.println("Count:" + (String)Mcount);
-Serial.println("RetCount:" + (String)retCount);
+//Serial.println("Count:" + (String)Mcount);
+//Serial.println("RetCount:" + (String)retCount);
 }

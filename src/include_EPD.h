@@ -57,11 +57,11 @@ U8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;
 
 
 void init_EPD(){
-    Serial.println("setup");
+    //Serial.println("setup");
     //display.init(115200); // enable diagnostic output on Serial
     display.init();
     u8g2_for_adafruit_gfx.begin(display);
-    Serial.println("setup done");
+    //Serial.println("setup done");
 }
 
 void showFont(const char name[], const uint8_t *f)
@@ -87,7 +87,7 @@ void showFont(const char name[], const uint8_t *f)
 }
 
 void showIt(){
-    Serial.println("Call");
+   // Serial.println("Call");
     showFont("u8g2_font_helvR14_tf", u8g2_font_helvR14_tf); // select u8g2 font from here: https://github.com/olikraus/u8g2/wiki/fntlistall
     delay(5000);
     showFont("u8g2_font_courB24_tf", u8g2_font_courB24_tf); // select u8g2 font from here: https://github.com/olikraus/u8g2/wiki/fntlistall

@@ -56,7 +56,7 @@ String sd_getfilecontent(char *filename){
   //char *retval;
   String SVal;
   if (myFile) {
-    Serial.println(filename);
+    //Serial.println(filename);
 
     // read from the file until there's nothing else in it:
     //Serial.println("Filecontent via serialwrite myfile.read");

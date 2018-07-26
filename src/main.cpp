@@ -28,8 +28,15 @@
 #include "include_structs.h"
 PositionType PosData; //Actual display position
 buttonDataTyp ButtonData[17];
+
+
+char getout[] = "json1.json";
+
+
 //#include "include_JSON.h"
 #include "include_ReadAndShow.h"
+#include "include_CLI.h"
+
 
 int MainDataOffset = 0;
 String DataID1 = (String)"" ;
@@ -37,7 +44,6 @@ String DataID2 = (String)"" ;
 String DataID3 = (String)"" ;
 
 
-char getout[] = "json1.json";
 String tmpS1;
 
 void setup() {
@@ -45,19 +51,22 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
-   sd_init();
+  
+    sd_init();
     init_EPD();
+    CLI_Setup();    
    // String SCC = sd_getfilecontent(getout);
    // Serial.println("SCC--------------");
    // Serial.println(SCC);
    //  Serial.println("SCC--------------");
 
 //testjson(SCC);//
-ShowEntries(getout,2,3);
+ShowEntries(getout,1,3);
 
 }
 
 void loop() {
+  CLI_loop();
         if (Serial.available() > 0) {
             
         }
