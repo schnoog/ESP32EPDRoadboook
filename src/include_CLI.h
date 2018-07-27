@@ -13,7 +13,7 @@
  */
 
 #include <Shell.h>
-
+#define CONFIG_SHELL_MAX_COMMANDS = 25;
 int iStart = 0;
 
 /**
@@ -98,6 +98,29 @@ int command_heap(int argc, char** argv)
   return SHELL_RET_SUCCESS;
 }
 
+int command_read(int argc, char** argv){
+    shell_println(string2char( sd_getfilecontent(getout)));
+  //shell_println(string2char((String)ESP.getFreeHeap()));
+  return SHELL_RET_SUCCESS;  
+}
+
+int command_done(int argc, char** argv){
+  shell_println(string2char( sd_getfilecontent(getout)));
+  int EntryNumber =strtol(argv[1],0,0);
+  UpdateDone(getout,EntryNumber,1);
+
+  //shell_println(string2char((String)ESP.getFreeHeap()));
+  return SHELL_RET_SUCCESS;  
+}
+
+int command_undone(int argc, char** argv){
+  shell_println(string2char( sd_getfilecontent(getout)));
+  int EntryNumber =strtol(argv[1],0,0);
+  UpdateDone(getout,EntryNumber,0);
+
+  //shell_println(string2char((String)ESP.getFreeHeap()));
+  return SHELL_RET_SUCCESS;  
+}
 
 /**
  * Function to write data to serial port
@@ -113,11 +136,18 @@ void shell_writer(char data)
 void CLI_Setup(){
     delay(1000);
     shell_init(shell_reader, shell_writer, 0);
+    
     shell_register(command_mycommand, PSTR("mycommand"));
     shell_register(command_othercommand, PSTR("othercommand"));
+    shell_register(command_read, PSTR("read"));
+    shell_register(command_done, PSTR("done"));    
+    shell_register(command_undone, PSTR("undone"));    
+
     shell_register(command_test, PSTR("test"));
     shell_register(command_show, PSTR("show"));
     shell_register(command_heap, PSTR("heap"));
+
+
 }
 
 void CLI_loop() {

@@ -4,25 +4,27 @@
 #include "include_BITMAPS.h"
 
 
-String IconDown = "\u0049";
-String IconLeft = "\u004A";
-String IconRight = "\u004B";
-String IconUp   = "\u004C";
-String IconOK  = "\u0078";
-String IconNOK  = "\u0079";
-String IconDetails = "\u00CF";
-String IconAntenna = "\u00f7";
-String IconAntennaConnected = "\u00f8";
-String IconSys = "\u0081";
-String IconTool = "\u0064";
-String IconPower = "\u00AA";
-String IconForward = "\u0041";
-String IconBack = "\u0042";
-
-
-
-
-
+String IconDown = "\u0049"; // OK
+String IconLeft = "\u004A"; // OK
+String IconRight = "\u004B";// OK
+String IconUp   = "\u004C"; //OK
+String IconOK  = "\u0078"; //OK
+String IconNOK  = "\u0079";  //OK
+String IconDetails = "\u00CF"; //OK
+String IconAntenna = "\u00f7"; //OK
+String IconAntennaConnected = "\u00f8"; //OK
+String IconSys = "\u0081";  //OK
+String IconCase = "\u0064"; //--->Koffer
+String IconTool = "\u011a"; //
+String IconPower = "\u00AA"; //OK
+String IconForward = "\u0042"; //OK
+String IconBack = "\u0043"; //OK
+String IconLocked = "\u00ca"; //Schloss zu
+String IconUnlocked = "\u00cb"; // Schloss offen
+String IconHome = "\u00b8"; //Haus
+String IconEdit = "\u00e3"; //Stift
+String IconList = "\u00c7"; //Liste
+String IconSleep = "\u00df"; //Moon
 
 
 void ShowEntries(char *filename, int intStartWith , int MaxCount){
@@ -161,6 +163,7 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
                  //               Serial.println("Skipping  MCount < intStartWith");
             }
             Mcount++;
+    //arr.printTo()
         }
 /* BUTTONS */
 //Button Buttons - 
@@ -185,7 +188,7 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
 */
         ButtonHorOffSet = ButtonHorOffSet + ButtonHorStep;
         u8g2_for_adafruit_gfx.setCursor(ButtonHorOffSet,ButtonOffSetY);
-        u8g2_for_adafruit_gfx.print(IconLeft);
+        u8g2_for_adafruit_gfx.print(IconBack);
         SubCount++;
 /*
         ButtonData[SubCount].BFunction = (String)"MenuBack";
@@ -194,7 +197,7 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
 
         ButtonHorOffSet = ButtonHorOffSet + ButtonHorStep;
         u8g2_for_adafruit_gfx.setCursor(ButtonHorOffSet,ButtonOffSetY);
-        u8g2_for_adafruit_gfx.print(IconRight);
+        u8g2_for_adafruit_gfx.print(IconForward);
         SubCount++;
 /*
         ButtonData[SubCount].BFunction = (String)"MoveForward";
@@ -215,6 +218,49 @@ void ShowEntries(char *filename, int intStartWith , int MaxCount){
 
     display.update();
         
+//Serial.println("Count:" + (String)Mcount);
+//Serial.println("RetCount:" + (String)retCount);
+}
+
+
+void UpdateDone(char *filename, int intEntryNum , int DoneValue){
+    int Mcount = 0;
+    String SCC = sd_getfilecontent(filename);
+    DynamicJsonBuffer jsonBuffer;
+    JsonArray& arr = jsonBuffer.parseArray(SCC);
+        for (JsonArray::iterator it=arr.begin(); it!=arr.end(); ++it)
+        {
+            if (Mcount == intEntryNum){
+                //Serial.println("Reporting MCount >= intStartWith");
+                    String SID = (*it)["id"];
+                    String PName = (*it)["name"];
+                    if (rbase64.decode(PName) == RBASE64_STATUS_OK ) {
+                        PName  = rbase64.result();
+                    }  
+					
+                        (*it)["done"] = (String)DoneValue;
+
+                    String PDone = (*it)["done"];
+                  //  Serial.println("Eintrag " + (String)Mcount);
+                  //  Serial.println(PName);
+                  //  Serial.println(SID +  "  " + PDone + "  " + PName);
+
+            }
+            Mcount++;
+        }
+
+        arr.prettyPrintTo(Serial);
+        SD.remove(filename);
+        File file = SD.open(filename, FILE_WRITE);
+        if (!file) {
+            Serial.println(F("Failed to create file"));
+            return;
+        }
+        if (arr.printTo(file) == 0) {
+            Serial.println(F("Failed to write to file"));
+        }
+        file.close();
+    
 //Serial.println("Count:" + (String)Mcount);
 //Serial.println("RetCount:" + (String)retCount);
 }
