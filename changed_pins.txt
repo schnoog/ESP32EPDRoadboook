@@ -1,0 +1,1 @@
+/c/Users/HomePC/.platformio/packages/framework-arduinoespressif32/variants/esp32/pins_arduino.h
